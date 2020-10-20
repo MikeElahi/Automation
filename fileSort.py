@@ -19,7 +19,7 @@ directories = [
 # Known formats that must be sorted
 # Custom Folders specified must exist
 formats = {
-    # e.g: 'Folder': set('.fmt1', '.fmt2')
+    # e.g: 'Folder': ('.fmt1', '.fmt2')
     'Pictures': ('.jpg', '.jpeg', '.png', '.webp', '.epub'),
     'Videos': ('.mp4', '.mkv', '.webm'),
     'Documents': ('.pdf', '.xlsx', '.csv', '.epub', '.xls'),
