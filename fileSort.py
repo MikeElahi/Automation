@@ -7,6 +7,7 @@ This module sorts files inside certain directories (e.g Downloads) into their re
 This file is licensed under the MIT License (See LICENSE for more info)
 """
 import os
+from datetime import datetime
 
 home = os.getenv("HOME")
 
@@ -34,6 +35,13 @@ for directory in directories:
     for file in files:
         origin = os.path.join(current, file)
         for destination, fmt in formats.items():
-             if file.endswith(fmt):
-                 os.rename(origin, os.path.join(home, destination, file))
-                 break
+            if not file.endswith(fmt): # To avoid further indenting
+                continue
+            dst = os.path.join(home, destination, file) # File rename destination
+            if not os.path.exists(dst): # Move the file if there's not existing file
+                os.rename(origin, dst)
+            else: # There's an existing file, attach precise datetime to it
+                timestamp = datetime.now().strftime('%b-%d-%Y-%H-%M-%S-%f')
+                # Since multiple moves may happen 
+                os.rename(origin, os.path.join(home, destination, '{}_{}'.format(file, timestamp)))
+                 
