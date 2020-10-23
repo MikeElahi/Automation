@@ -24,7 +24,7 @@ formats = {
     'Pictures': ('.jpg', '.jpeg', '.png', '.webp', '.epub'),
     'Videos': ('.mp4', '.mkv', '.webm'),
     'Documents': ('.pdf', '.xlsx', '.csv', '.epub', '.xls'),
-    'Music': ('.mp3', ),
+    'Music': ('.mp3', '.m4a',),
     # Custom Folders
     'Archives': ('.tar.gz', '.tar.xz', '.tar', '.zip', '.gz', '.7z', '.rar'), 
     'Packages': ('.deb', '.exe', )
