@@ -43,5 +43,5 @@ for directory in directories:
             else: # There's an existing file, attach precise datetime to it
                 timestamp = datetime.now().strftime('%b-%d-%Y-%H-%M-%S-%f')
                 # Since multiple moves may happen 
-                os.rename(origin, os.path.join(home, destination, '{}_{}'.format(file, timestamp)))
+                os.rename(origin, os.path.join(home, destination, '{}_{}'.format(timestamp, file)))
                  
