@@ -35,8 +35,15 @@ for directory in directories:
     for file in files:
         origin = os.path.join(current, file)
         for destination, fmt in formats.items():
-            if not file.endswith(fmt): # To avoid further indenting
+            # Keep going if format is not known
+            if not file.endswith(fmt):
                 continue
+            
+            # Drop if there's an aria2 file with the same name (meaning there's an ongoing download)
+            if '{}.aria2'.format(file) in files:
+                continue
+
+            # Avoid overriding files
             dst = os.path.join(home, destination, file) # File rename destination
             if not os.path.exists(dst): # Move the file if there's not existing file
                 os.rename(origin, dst)
