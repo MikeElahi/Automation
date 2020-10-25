@@ -106,28 +106,38 @@ if __name__ == "__main__":
     for manager, packages in p.packages.items():
         print('Installed via {}:'.format(manager), ' '.join(packages))
     
+    # Favorite Picking
     choice = input('\nPick favorite packages? (y/n) [n]: ')
-    if choice != 'y':
-        quit()
-    
-    favorites = {}
-    default = input('Select default option (y/n) [n]: ')
-    default = default if default != '' else 'n'
-    for manager, packages in p.packages.items():
-        print('{} packages:'.format(manager))
-        favorite_packages = []
-        try:
-            for package in packages:
-                i = input('Keep {}? (y/n) [{}] '.format(package, default))
-                if (i == '' and default == 'y') or i == 'y':
-                    favorite_packages.append(package)
-        except KeyboardInterrupt:
-            print('\n')
-            continue
-        finally:
-            if favorite_packages:
-                favorites[manager] = favorite_packages
-    
-    for manager, packages in favorites.items():
-        print('Install via {}:'.format(manager), ' '.join(packages))
+    favorite_enabled = False if choice != 'y' else True
+    if favorite_enabled:
+        favorites = {}
+        default = input('Select default option (y/n) [n]: ')
+        default = default if default != '' else 'n'
+        for manager, packages in p.packages.items():
+            print('{} packages:'.format(manager))
+            favorite_packages = []
+            try:
+                for package in packages:
+                    i = input('Keep {}? (y/n) [{}] '.format(package, default))
+                    if (i == '' and default == 'y') or i == 'y':
+                        favorite_packages.append(package)
+            except KeyboardInterrupt:
+                print('\n')
+                continue
+            finally:
+                if favorite_packages:
+                    favorites[manager] = favorite_packages
         
+        for manager, packages in favorites.items():
+            print('Install via {}:'.format(manager), ' '.join(packages))
+    
+    # Generate files
+    picked_packages = p.packages if not favorite_enabled else favorites
+    generate = input('Generate a sh file? (y/n) [y]: ') 
+    generate_enabled = False if generate == 'n' else True
+
+    if generate_enabled:
+        with open('install.sh', 'w+') as file:
+            file.write('echo "This file needs root access to run, make sure you have proper access"\n')
+            for manager,  packages in picked_packages.items():
+                file.write('{} {}\n'.format(PREFIX_LIST[manager][1], ' '.join(packages)))        
