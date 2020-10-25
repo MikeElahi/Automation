@@ -24,7 +24,9 @@ class Processor:
     unsupported_operators = ['&', '|', ';', './']
     def __init__(self, prefixes):
         self.prefixes = prefixes
-        self.packages = set()
+        self.packages = {}
+        for manager in prefixes:
+            self.packages[manager] = set()
 
     def _openFile(self, file_path):
         try:
@@ -32,7 +34,7 @@ class Processor:
             self.file = open(file_path, 'r+', errors='ignore')
         except FileNotFoundError:
             self.active = False
-            self.file = []
+            self.file = {}
     
     def invoke(self, file_path, processor_function, cleanup_function=None):
         self._openFile(file_path)
@@ -41,9 +43,10 @@ class Processor:
         for line in self.file:
             # Find the prefix used
             prefix = None
-            for values in prefixes.values():
+            for manager, values in prefixes.items():
                 if values[1] in line:
                     prefix = values[1]
+                    manager = manager
                     break
             if prefix is None:
                 continue
@@ -54,9 +57,9 @@ class Processor:
                 continue
 
             line = line.replace('\n', '')
-            self.packages.update(processor_function(line, prefix))
+            self.packages[manager].update(processor_function(line, prefix))
         
-        self.packages.remove('') if '' in self.packages else None
+        self.packages[manager].remove('') if '' in self.packages[manager] else None
         self.file.close()
 
 
@@ -99,4 +102,5 @@ if __name__ == "__main__":
         else:
             print('{} not found, skipping...'.format(key))
     
-    print(' '.join(p.packages))
+    for manager, packages in p.packages.items():
+        print('Installed via {}:'.format(manager), ' '.join(packages))
