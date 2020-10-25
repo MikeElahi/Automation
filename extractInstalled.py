@@ -105,3 +105,29 @@ if __name__ == "__main__":
     
     for manager, packages in p.packages.items():
         print('Installed via {}:'.format(manager), ' '.join(packages))
+    
+    choice = input('\nPick favorite packages? (y/n) [n]: ')
+    if choice != 'y':
+        quit()
+    
+    favorites = {}
+    default = input('Select default option (y/n) [n]: ')
+    default = default if default != '' else 'n'
+    for manager, packages in p.packages.items():
+        print('{} packages:'.format(manager))
+        favorite_packages = []
+        try:
+            for package in packages:
+                i = input('Keep {}? (y/n) [{}] '.format(package, default))
+                if (i == '' and default == 'y') or i == 'y':
+                    favorite_packages.append(package)
+        except KeyboardInterrupt:
+            print('\n')
+            continue
+        finally:
+            if favorite_packages:
+                favorites[manager] = favorite_packages
+    
+    for manager, packages in favorites.items():
+        print('Install via {}:'.format(manager), ' '.join(packages))
+        
