@@ -13,7 +13,8 @@ home = os.getenv("HOME")
 PREFIX_LIST = {
     'apt': ['/usr/bin/apt', 'apt install'],
     'snap': ['/usr/bin/snap', 'snap install'],
-    'yum': ['/usr/bin/yum', 'yum install']
+    'yum': ['/usr/bin/yum', 'yum install'],
+    'rpm': ['/usr/bin/rpm', 'rpm -i'],
 }
 
 
