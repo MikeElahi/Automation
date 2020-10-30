@@ -21,7 +21,11 @@ PREFIX_LIST = {
 ZSH_CLEANUP = re.compile(r': \d+:\d+;')
 
 class Processor:
-    """ Handles file operation and filtering """
+    """ Handles file operation and filtering
+    
+    With every type of history regardless of its type or format, some global settings or code needs to be applied
+    This class is the container for said code.
+    """
     unsupported_operators = ['&', '|', ';', './']
     def __init__(self, prefixes):
         self.prefixes = prefixes
